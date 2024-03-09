@@ -1,4 +1,4 @@
-package com.ts_pokedex_rn2
+package com.ts_products_rn
 
 import android.app.Application
 import com.facebook.react.PackageList

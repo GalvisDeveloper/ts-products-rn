@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface ts_pokedex_rn2Tests : XCTestCase
+@interface ts_products_rnTests : XCTestCase
 
 @end
 
-@implementation ts_pokedex_rn2Tests
+@implementation ts_products_rnTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
