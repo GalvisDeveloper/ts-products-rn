@@ -3,7 +3,7 @@ import React from 'react';
 
 const LoadingScreen = () => {
 	return (
-		<View>
+		<View style={styles.ct}>
 			<Text>LoadingScreen</Text>
 		</View>
 	);
@@ -11,4 +11,11 @@ const LoadingScreen = () => {
 
 export default LoadingScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	ct: {
+		flex: 1,
+		backgroundColor: '#1b1b1b',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+});

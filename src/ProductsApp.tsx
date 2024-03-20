@@ -1,14 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import * as eva from '@eva-design/eva';
 import { NavigationContainer } from '@react-navigation/native';
+import { ApplicationProvider } from '@ui-kitten/components';
+import React from 'react';
+import { StyleSheet, useColorScheme } from 'react-native';
+import StackNavigator from './presentation/navigation/StackNavigator';
 
 const ProductsApp = () => {
+	const colorScheme = useColorScheme();
+	const theme = colorScheme === 'dark' ? eva.dark : eva.light;
+
 	return (
-		<NavigationContainer>
-			<View>
-				<Text>Products App</Text>
-			</View>
-		</NavigationContainer>
+		<ApplicationProvider {...eva} theme={theme}>
+			<NavigationContainer>
+				<StackNavigator />
+			</NavigationContainer>
+		</ApplicationProvider>
 	);
 };
 
