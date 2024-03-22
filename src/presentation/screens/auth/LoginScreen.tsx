@@ -2,23 +2,40 @@ import { StyleSheet, useWindowDimensions } from 'react-native';
 import React from 'react';
 import { Button, Input, Layout, Text } from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
+import MyIcon from '../../components/ui/MyIcon';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParams } from '../../navigation/StackNavigator';
 
-const LoginScreen = () => {
+interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
+
+const LoginScreen = ({ navigation }: Props) => {
 	const { height } = useWindowDimensions();
 
 	return (
 		<Layout style={styles.ct}>
-			<ScrollView style={styles.sv}>
-				<Layout style={{ paddingTop: height * 0.35 }}>
+			<ScrollView style={styles.sv} showsVerticalScrollIndicator={false}>
+				<Layout style={{ paddingTop: height * 0.25 }}>
 					<Text category='h1'>Sign In</Text>
 					<Text category='p2'>Please, put your email and password</Text>
 				</Layout>
 
 				{/* Inputs */}
 				<Layout style={{ paddingTop: 20 }}>
-					<Input placeholder='Email' keyboardType='email-address' autoCapitalize='none' style={{ marginBottom: 10 }} />
+					<Input
+						accessoryLeft={<MyIcon name='email-outline' />}
+						placeholder='Email'
+						keyboardType='email-address'
+						autoCapitalize='none'
+						style={{ marginBottom: 10 }}
+					/>
 
-					<Input placeholder='Password' secureTextEntry autoCapitalize='none' style={{ marginBottom: 10 }} />
+					<Input
+						accessoryLeft={<MyIcon name='lock-outline' />}
+						placeholder='Password'
+						secureTextEntry
+						autoCapitalize='none'
+						style={{ marginBottom: 10 }}
+					/>
 				</Layout>
 
 				{/* Space */}
@@ -26,7 +43,9 @@ const LoginScreen = () => {
 
 				{/* Button */}
 				<Layout>
-					<Button onPress={() => {}}>Sign In</Button>
+					<Button accessoryRight={<MyIcon name='arrow-forward-outline' white />} onPress={() => {}}>
+						Sign In
+					</Button>
 				</Layout>
 
 				{/* Space */}
@@ -39,7 +58,12 @@ const LoginScreen = () => {
 					{/* <Text status='primary' category='s1' onPress={() => {}}>
 						Sign Up
 					</Text> */}
-					<Button appearance='ghost' onPress={() => {}}>
+					<Button
+						appearance='ghost'
+						onPress={() => {
+							navigation.navigate('Register');
+						}}
+					>
 						Sign Up
 					</Button>
 				</Layout>

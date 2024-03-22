@@ -10,13 +10,25 @@ const ProductsApp = () => {
 	const colorScheme = useColorScheme();
 	const theme = colorScheme === 'dark' ? eva.dark : eva.light;
 
-	console.log(theme);
+	const bgColor = colorScheme === 'dark' ? theme['color-basic-800'] : theme['color-primary-100'];
 
 	return (
 		<>
 			<IconRegistry icons={EvaIconsPack} />
 			<ApplicationProvider {...eva} theme={theme}>
-				<NavigationContainer>
+				<NavigationContainer
+					theme={{
+						dark: colorScheme === 'dark',
+						colors: {
+							primary: theme['color-primary-500'],
+							background: bgColor,
+							card: theme['color-primary-100'],
+							text: theme['text-basic-color'],
+							border: theme['color-primary-800'],
+							notification: theme['color-primary-500'],
+						},
+					}}
+				>
 					<StackNavigator />
 				</NavigationContainer>
 			</ApplicationProvider>
