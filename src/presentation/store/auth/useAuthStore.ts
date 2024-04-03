@@ -3,7 +3,6 @@ import { User } from "../../../domain/entities/user";
 import { AuthStatus } from "../../../infraestructure/interfaces/auth.status";
 import { authLogin } from "../../../actions/auth/auth";
 
-
 export interface AuthState {
     isLogged: boolean;
     status: AuthStatus;
@@ -31,7 +30,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
         set({ status: 'authenticated', isLogged: true, token: resp.token, user: resp.user })
 
-        return false;
+        return true;
     }
 
 }))

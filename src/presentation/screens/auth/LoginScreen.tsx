@@ -1,22 +1,35 @@
-import { StyleSheet, useWindowDimensions } from 'react-native';
-import React from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Input, Layout, Text } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, useWindowDimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import MyIcon from '../../components/ui/MyIcon';
-import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
-import { API_URL, STAGE } from '@env';
-import { authLogin } from '../../../actions/auth/auth';
+import { useAuthStore } from '../../store/auth/useAuthStore';
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
 const LoginScreen = ({ navigation }: Props) => {
 	const { height } = useWindowDimensions();
 
-	const [email, setEmail] = React.useState('');
-	const [password, setPassword] = React.useState('');
+	const { login } = useAuthStore();
 
-	console.log({ email, password });
+	const [form, setForm] = useState({
+		email: '',
+		password: '',
+	});
+
+	const onLogin = async () => {
+		if (form.email === '' || form.password === '') return;
+
+		const success = await login(form.email, form.password);
+		if (success) {
+			navigation.navigate('Home');
+			return;
+		}
+
+		Alert.alert('Error', 'Invalid credentials', [{ text: 'Ok' }], { cancelable: true });
+	};
 
 	return (
 		<Layout style={styles.ct}>
@@ -34,7 +47,8 @@ const LoginScreen = ({ navigation }: Props) => {
 						keyboardType='email-address'
 						autoCapitalize='none'
 						style={{ marginBottom: 10 }}
-						onChange={(e) => setEmail(e.nativeEvent.text)}
+						value={form.email}
+						onChangeText={(email) => setForm({ ...form, email })}
 					/>
 
 					<Input
@@ -43,7 +57,8 @@ const LoginScreen = ({ navigation }: Props) => {
 						secureTextEntry
 						autoCapitalize='none'
 						style={{ marginBottom: 10 }}
-						onChange={(e) => setPassword(e.nativeEvent.text)}
+						value={form.password}
+						onChangeText={(password) => setForm({ ...form, password })}
 					/>
 				</Layout>
 
@@ -54,7 +69,7 @@ const LoginScreen = ({ navigation }: Props) => {
 				<Layout>
 					<Button
 						accessoryRight={<MyIcon name='arrow-forward-outline' white />}
-						onPress={() => authLogin(email, password)}
+						onPress={() => onLogin()}
 					>
 						Sign In
 					</Button>
