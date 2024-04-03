@@ -6,13 +6,17 @@ import MyIcon from '../../components/ui/MyIcon';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { API_URL, STAGE } from '@env';
+import { authLogin } from '../../../actions/auth/auth';
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
 const LoginScreen = ({ navigation }: Props) => {
 	const { height } = useWindowDimensions();
 
-	console.log({ API_URL, STAGE });
+	const [email, setEmail] = React.useState('');
+	const [password, setPassword] = React.useState('');
+
+	console.log({ email, password });
 
 	return (
 		<Layout style={styles.ct}>
@@ -30,6 +34,7 @@ const LoginScreen = ({ navigation }: Props) => {
 						keyboardType='email-address'
 						autoCapitalize='none'
 						style={{ marginBottom: 10 }}
+						onChange={(e) => setEmail(e.nativeEvent.text)}
 					/>
 
 					<Input
@@ -38,6 +43,7 @@ const LoginScreen = ({ navigation }: Props) => {
 						secureTextEntry
 						autoCapitalize='none'
 						style={{ marginBottom: 10 }}
+						onChange={(e) => setPassword(e.nativeEvent.text)}
 					/>
 				</Layout>
 
@@ -46,7 +52,10 @@ const LoginScreen = ({ navigation }: Props) => {
 
 				{/* Button */}
 				<Layout>
-					<Button accessoryRight={<MyIcon name='arrow-forward-outline' white />} onPress={() => {}}>
+					<Button
+						accessoryRight={<MyIcon name='arrow-forward-outline' white />}
+						onPress={() => authLogin(email, password)}
+					>
 						Sign In
 					</Button>
 				</Layout>
