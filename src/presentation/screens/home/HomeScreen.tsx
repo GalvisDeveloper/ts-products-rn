@@ -9,7 +9,7 @@ const HomeScreen = () => {
 
 			<Icon name='facebook' />
 
-			<Button onPress={() => {}}> Close </Button>
+			{/*<Button onPress={() => {}}> Close </Button> */}
 		</Layout>
 	);
 };
@@ -18,8 +18,10 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
 	ct: {
+		marginVertical: 10,
+		backgroundColor: 'red',
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignSelf: 'center',
 	},
 });

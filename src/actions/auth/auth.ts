@@ -19,7 +19,17 @@ export const authLogin = async (email: string, password: string) => {
         email = email.toLocaleLowerCase();
         const { data } = await tesloApi.post<AuthResponse>("/auth/login", { email, password });
 
-        console.log(data)
+        console.log({ data })
+        return returnUserToken(data);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const authCheckStatus = async () => {
+    try {
+        const { data } = await tesloApi.get<AuthResponse>("/auth/check-status");
+
         return returnUserToken(data);
     } catch (error) {
         console.error(error)

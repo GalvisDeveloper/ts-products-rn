@@ -11,10 +11,11 @@ const tesloApi = axios.create({
     },
 });
 
-// TODO : Interceptors
+// tesloApi.interceptors.request.use(async (config) => {
 
-
-
+//     const token = await StorageAdapter
+//     return config;
+// });
 
 
 export { tesloApi };
