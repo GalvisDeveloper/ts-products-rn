@@ -3,7 +3,6 @@ import { KeyValuePair } from "@react-native-async-storage/async-storage/lib/type
 
 export class StorageAdapter {
 
-
     static async getItem(key: string): Promise<string | null> {
         try {
             return await AsyncStorage.getItem(key);
