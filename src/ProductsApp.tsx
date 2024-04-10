@@ -5,6 +5,7 @@ import React from 'react';
 import { StyleSheet, useColorScheme } from 'react-native';
 import StackNavigator from './presentation/navigation/StackNavigator';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import AuthProvider from './presentation/providers/AuthProvider';
 
 const ProductsApp = () => {
 	const colorScheme = useColorScheme();
@@ -29,7 +30,9 @@ const ProductsApp = () => {
 						},
 					}}
 				>
-					<StackNavigator />
+					<AuthProvider>
+						<StackNavigator />
+					</AuthProvider>
 				</NavigationContainer>
 			</ApplicationProvider>
 		</>

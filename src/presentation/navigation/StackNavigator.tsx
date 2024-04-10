@@ -24,7 +24,7 @@ const fadeAnimation: StackCardStyleInterpolator = ({ current }) => ({
 const StackNavigator = () => {
 	return (
 		<Stack.Navigator
-			initialRouteName='Product'
+			initialRouteName='Loading'
 			screenOptions={({ route }) => {
 				return {
 					headerShown: false,
