@@ -1,7 +1,7 @@
 import { tesloApi } from "../../config/api/tesloApi";
 import { User } from "../../domain/entities/user";
 import { showErrorMessage } from "../../helpers/axiosError";
-import { AuthResponse } from "../../infraestructure/interfaces/auth.responses";
+import { AuthResponse } from "../../infraestructure/interfaces/auth/auth.responses";
 
 const returnUserToken = (data: AuthResponse) => {
     const user: User = {

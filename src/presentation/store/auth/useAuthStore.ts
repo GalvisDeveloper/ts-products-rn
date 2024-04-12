@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { authCheckStatus, authLogin, authRegister } from "../../../actions/auth/auth";
 import { StorageAdapter } from "../../../config/adapters/async-storage";
 import { User } from "../../../domain/entities/user";
-import { AuthStatus } from "../../../infraestructure/interfaces/auth.status";
+import { AuthStatus } from "../../../infraestructure/interfaces/auth/auth.status";
 
 export interface AuthState {
     isLogged: boolean;
