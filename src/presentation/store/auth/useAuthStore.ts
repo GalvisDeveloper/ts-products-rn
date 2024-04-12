@@ -1,10 +1,9 @@
-import { SetState, create } from "zustand";
-import { User } from "../../../domain/entities/user";
-import { AuthStatus } from "../../../infraestructure/interfaces/auth.status";
+import { Alert } from "react-native";
+import { create } from "zustand";
 import { authCheckStatus, authLogin, authRegister } from "../../../actions/auth/auth";
 import { StorageAdapter } from "../../../config/adapters/async-storage";
-import { AuthResponse, UserToken } from "../../../infraestructure/interfaces/auth.responses";
-import { Alert } from "react-native";
+import { User } from "../../../domain/entities/user";
+import { AuthStatus } from "../../../infraestructure/interfaces/auth.status";
 
 export interface AuthState {
     isLogged: boolean;
@@ -68,7 +67,6 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         Alert.alert('Success', 'User created successfully');
         await get().saveTokenAndUpdateUser(resp.token, resp.user);
         return true;
-
     }
 
 }))

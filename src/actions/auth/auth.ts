@@ -1,9 +1,7 @@
-import { Alert } from "react-native";
 import { tesloApi } from "../../config/api/tesloApi";
 import { User } from "../../domain/entities/user";
-import { AuthResponse, ErrorResponse } from "../../infraestructure/interfaces/auth.responses";
-import { AxiosError, isAxiosError } from "axios";
 import { showErrorMessage } from "../../helpers/axiosError";
+import { AuthResponse } from "../../infraestructure/interfaces/auth.responses";
 
 const returnUserToken = (data: AuthResponse) => {
     const user: User = {
