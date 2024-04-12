@@ -1,8 +1,10 @@
-import { create } from "zustand";
+import { SetState, create } from "zustand";
 import { User } from "../../../domain/entities/user";
 import { AuthStatus } from "../../../infraestructure/interfaces/auth.status";
-import { authCheckStatus, authLogin } from "../../../actions/auth/auth";
+import { authCheckStatus, authLogin, authRegister } from "../../../actions/auth/auth";
 import { StorageAdapter } from "../../../config/adapters/async-storage";
+import { AuthResponse, UserToken } from "../../../infraestructure/interfaces/auth.responses";
+import { Alert } from "react-native";
 
 export interface AuthState {
     isLogged: boolean;
@@ -11,15 +13,23 @@ export interface AuthState {
     user: User | null;
 
     login: (email: string, password: string) => Promise<boolean>;
-    checkStatus: () => Promise<boolean>;
     logout: () => Promise<void>;
+    signUp: (email: string, password: string, fullName: string) => Promise<boolean>;
+    checkStatus: () => Promise<boolean>;
+    saveTokenAndUpdateUser: (token: string, user: User) => Promise<void>;
 }
+
 
 export const useAuthStore = create<AuthState>()((set, get) => ({
     status: 'checking',
     isLogged: false,
     token: null,
     user: null,
+
+    saveTokenAndUpdateUser: async (token: string, user: User) => {
+        await StorageAdapter.setItem('token', token);
+        set({ status: 'authenticated', isLogged: true, token: token, user: user });
+    },
 
     login: async (email: string, password: string) => {
 
@@ -30,10 +40,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         }
 
         // save token in storage
-        await StorageAdapter.setItem('token', resp.token);
-
-        set({ status: 'authenticated', isLogged: true, token: resp.token, user: resp.user })
-
+        await get().saveTokenAndUpdateUser(resp.token, resp.user);
         return true;
     },
 
@@ -43,14 +50,25 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             set({ status: 'unauthenticated' })
             return false;
         }
-        await StorageAdapter.setItem('token', resp.token);
-        set({ status: 'authenticated', isLogged: true, token: resp.token, user: resp.user })
+        await get().saveTokenAndUpdateUser(resp.token, resp.user);
         return true;
     },
 
     logout: async () => {
         await StorageAdapter.clear();
         set({ status: 'unauthenticated', isLogged: false, token: null, user: null })
+    },
+
+    signUp: async (email: string, password: string, fullName: string) => {
+        const resp = await authRegister(email, password, fullName);
+        if (!resp) {
+            set({ status: 'unauthenticated' })
+            return false;
+        }
+        Alert.alert('Success', 'User created successfully');
+        await get().saveTokenAndUpdateUser(resp.token, resp.user);
+        return true;
+
     }
 
 }))

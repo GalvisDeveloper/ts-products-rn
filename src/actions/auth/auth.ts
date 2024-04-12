@@ -1,6 +1,9 @@
+import { Alert } from "react-native";
 import { tesloApi } from "../../config/api/tesloApi";
 import { User } from "../../domain/entities/user";
-import { AuthResponse } from "../../infraestructure/interfaces/auth.responses";
+import { AuthResponse, ErrorResponse } from "../../infraestructure/interfaces/auth.responses";
+import { AxiosError, isAxiosError } from "axios";
+import { showErrorMessage } from "../../helpers/axiosError";
 
 const returnUserToken = (data: AuthResponse) => {
     const user: User = {
@@ -19,10 +22,9 @@ export const authLogin = async (email: string, password: string) => {
         email = email.toLocaleLowerCase();
         const { data } = await tesloApi.post<AuthResponse>("/auth/login", { email, password });
 
-        // console.log({ data })
         return returnUserToken(data);
     } catch (error) {
-        console.log(error)
+        showErrorMessage(error);
     }
 }
 
@@ -32,6 +34,17 @@ export const authCheckStatus = async () => {
 
         return returnUserToken(data);
     } catch (error) {
-        console.log(error)
+        console.log({ error })
+    }
+}
+
+export const authRegister = async (email: string, password: string, fullName: string) => {
+    try {
+        email = email.toLocaleLowerCase();
+        const { data } = await tesloApi.post<AuthResponse>("/auth/register", { email, password, fullName });
+
+        return returnUserToken(data);
+    } catch (error) {
+        showErrorMessage(error);
     }
 }
