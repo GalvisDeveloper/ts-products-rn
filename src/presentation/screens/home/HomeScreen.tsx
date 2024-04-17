@@ -5,17 +5,17 @@ import { StyleSheet } from 'react-native';
 import { getProductsPaginated } from '../../../actions/products/get-product-paginated';
 import { useAuthStore } from '../../store/auth/useAuthStore';
 import MainLayout from '../../layouts/MainLayout';
+import FullScreenLoader from '../../components/ui/FullScreenLoader';
+import ProductList from '../../components/products/ProductList';
 
 const HomeScreen = () => {
 	const { logout } = useAuthStore();
 
-	const { isLoading, data: products } = useQuery({
+	const { isLoading, data: products = [] } = useQuery({
 		queryKey: ['products', 'infinite'],
 		staleTime: 1000 * 60 * 60, // 1 hour
 		queryFn: () => getProductsPaginated(0),
 	});
-
-	console.log(products);
 
 	return (
 		<MainLayout
@@ -26,21 +26,8 @@ const HomeScreen = () => {
 			}}
 			rightActionIcon='arrow-back-outline'
 		>
-			<Layout style={styles.ct}>
-				<Text>{JSON.stringify(products, null, 2)}</Text>
-
-				<Button accessoryLeft={<Icon name='log-out-outline' />} onPress={logout}>
-					Close
-				</Button>
-			</Layout>
+			{isLoading ? <FullScreenLoader /> : <ProductList products={products} />}
 		</MainLayout>
-		// <Layout style={styles.ct}>
-		// 	<Text>{JSON.stringify(products, null, 2)}</Text>
-
-		// 	<Button accessoryLeft={<Icon name='log-out-outline' />} onPress={logout}>
-		// 		Close
-		// 	</Button>
-		// </Layout>
 	);
 };
 
