@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { Button, Icon, Layout, Text } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -11,11 +11,19 @@ import ProductList from '../../components/products/ProductList';
 const HomeScreen = () => {
 	const { logout } = useAuthStore();
 
-	const { isLoading, data: products = [] } = useQuery({
+	const { isLoading, data, fetchNextPage } = useInfiniteQuery({
 		queryKey: ['products', 'infinite'],
 		staleTime: 1000 * 60 * 60, // 1 hour
-		queryFn: () => getProductsPaginated(0),
+		initialPageParam: 0,
+		queryFn: async (params) => {
+			return await getProductsPaginated(params.pageParam);
+		},
+		getNextPageParam: (lastPage, pages) => {
+			return pages.length;
+		},
 	});
+
+	console.log({ data });
 
 	return (
 		<MainLayout
@@ -26,7 +34,7 @@ const HomeScreen = () => {
 			}}
 			rightActionIcon='arrow-back-outline'
 		>
-			{isLoading ? <FullScreenLoader /> : <ProductList products={products} />}
+			{isLoading ? <FullScreenLoader /> : <ProductList products={data?.pages.flat() ?? []} fetchNextPage={fetchNextPage} />}
 		</MainLayout>
 	);
 };

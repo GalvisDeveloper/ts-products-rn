@@ -1,15 +1,24 @@
 import { Layout, List } from '@ui-kitten/components';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Product } from '../../../domain/entities/product';
 import ProductCard from './ProductCard';
 
 interface Props {
 	products: Product[];
-	//todo: fetch nextPage
+	fetchNextPage: () => void;
 }
 
-const ProductList = ({ products }: Props) => {
+const ProductList = ({ products, fetchNextPage }: Props) => {
+	const [isRefreshing, setIsRefreshing] = useState(false);
+
+	const onPullToRefresh = async () => {
+		setIsRefreshing(true);
+		// sleep 2
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+		setIsRefreshing(false);
+	};
+
 	return (
 		<List
 			data={products}
@@ -17,6 +26,9 @@ const ProductList = ({ products }: Props) => {
 			keyExtractor={(item, idx) => `${item.id}-${idx}`}
 			renderItem={({ item }) => <ProductCard product={item} />}
 			ListFooterComponent={<Layout style={{ height: 150 }}></Layout>}
+			onEndReached={fetchNextPage}
+			onEndReachedThreshold={0.5}
+			// refreshControl={ <List.RefreshControl refreshing={isRefreshing} onRefresh={onPullToRefresh} />
 		/>
 	);
 };
