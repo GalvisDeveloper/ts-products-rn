@@ -12,7 +12,7 @@ interface Props {
 	rightAction?: () => void;
 	rightActionIcon?: string;
 
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 const MainLayout = ({ title, subTitle, rightAction, rightActionIcon, children }: Props) => {
@@ -29,7 +29,7 @@ const MainLayout = ({ title, subTitle, rightAction, rightActionIcon, children }:
 	};
 
 	return (
-		<Layout style={{ paddingTop: top }}>
+		<Layout style={{ paddingTop: top, ...styles.ct }}>
 			<TopNavigation
 				title={title}
 				subtitle={subTitle}
@@ -43,6 +43,10 @@ const MainLayout = ({ title, subTitle, rightAction, rightActionIcon, children }:
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	ct: { 
+		marginHorizontal: 10,
+	}
+});
 
 export default MainLayout;

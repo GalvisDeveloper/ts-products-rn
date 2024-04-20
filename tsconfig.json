@@ -4,5 +4,8 @@
     "typeRoots": [
       "./src/types"
     ],
+    "target": "es2018",
+    "module": "esnext",
+    "moduleResolution": "node",
   },
 }

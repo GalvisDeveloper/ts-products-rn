@@ -23,17 +23,8 @@ const HomeScreen = () => {
 		},
 	});
 
-	console.log({ data });
-
 	return (
-		<MainLayout
-			title='TesloShop Products'
-			subTitle='Welcome to TesloShop, here you can find the best products for you!'
-			rightAction={() => {
-				console.log('first');
-			}}
-			rightActionIcon='arrow-back-outline'
-		>
+		<MainLayout title='TesloShop Products' subTitle='Welcome to TesloShop, here you can find the best products for you!'>
 			{isLoading ? <FullScreenLoader /> : <ProductList products={data?.pages.flat() ?? []} fetchNextPage={fetchNextPage} />}
 		</MainLayout>
 	);
