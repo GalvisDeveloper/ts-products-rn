@@ -1,6 +1,6 @@
 import { Layout, List } from '@ui-kitten/components';
 import React, { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { RefreshControl, StyleSheet, Text } from 'react-native';
 import { Product } from '../../../domain/entities/product';
 import ProductCard from './ProductCard';
 
@@ -28,7 +28,7 @@ const ProductList = ({ products, fetchNextPage }: Props) => {
 			ListFooterComponent={<Layout style={{ height: 150 }}></Layout>}
 			onEndReached={fetchNextPage}
 			onEndReachedThreshold={0.5}
-			// refreshControl={ <List.RefreshControl refreshing={isRefreshing} onRefresh={onPullToRefresh} />
+			refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onPullToRefresh} />}
 		/>
 	);
 };
