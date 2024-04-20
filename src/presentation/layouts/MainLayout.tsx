@@ -19,9 +19,7 @@ const MainLayout = ({ title, subTitle, rightAction, rightActionIcon, children }:
 	const { top } = useSafeAreaInsets();
 	const { goBack, canGoBack } = useNavigation();
 
-	const RenderBackAction = () => (
-		<TopNavigationAction icon={<MyIcon name='arrow-back-outline' />} onPress={goBack} />
-    );
+	const RenderBackAction = () => <TopNavigationAction icon={<MyIcon name='arrow-back-outline' />} onPress={goBack} />;
 
 	const RenderRightAction = () => {
 		if (!rightAction || !rightActionIcon) return null;
@@ -29,7 +27,7 @@ const MainLayout = ({ title, subTitle, rightAction, rightActionIcon, children }:
 	};
 
 	return (
-		<Layout style={{ paddingTop: top, ...styles.ct }}>
+		<Layout style={{ paddingTop: top }}>
 			<TopNavigation
 				title={title}
 				subtitle={subTitle}
@@ -43,10 +41,6 @@ const MainLayout = ({ title, subTitle, rightAction, rightActionIcon, children }:
 	);
 };
 
-const styles = StyleSheet.create({
-	ct: { 
-		marginHorizontal: 10,
-	}
-});
+const styles = StyleSheet.create({});
 
 export default MainLayout;
