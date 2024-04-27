@@ -3,25 +3,25 @@
 import { User } from "../../../domain/entities/user";
 
 export interface ProductListResponse {
-    id:          string;
-    title:       string;
-    price:       number;
+    id: string;
+    title: string;
+    price: number;
     description: string;
-    slug:        string;
-    stock:       number;
-    sizes:       Size[];
-    gender:      string;
-    tags:        Tag[];
-    images:      string[];
-    user:        User;
+    slug: string;
+    stock: number;
+    sizes: Size[];
+    gender: Gender;
+    tags: Tag[];
+    images: string[];
+    user: User;
 }
 
 export enum Size {
-    L = "L",
-    M = "M",
     S = "S",
-    Xl = "XL",
+    M = "M",
+    L = "L",
     Xs = "XS",
+    Xl = "XL",
     Xxl = "XXL",
 }
 
@@ -31,3 +31,9 @@ export enum Tag {
     Shirt = "shirt",
 }
 
+export enum Gender {
+    Kid = 'kid',
+    Men = 'men',
+    Women = 'women',
+    Unisex = 'unisex'
+}

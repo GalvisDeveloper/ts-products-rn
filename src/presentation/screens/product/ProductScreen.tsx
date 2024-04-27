@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { useQuery } from '@tanstack/react-query';
-import { Input, Layout } from '@ui-kitten/components';
+import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
 import React, { useRef } from 'react';
 import { FlatList, ScrollView, StyleSheet } from 'react-native';
 import { getProductById } from '../../../actions/products/get-product-by-id';
@@ -8,11 +8,18 @@ import { FadeInImage } from '../../components/ui/FadeInImage';
 import FullScreenLoader from '../../components/ui/FullScreenLoader';
 import MainLayout from '../../layouts/MainLayout';
 import { RootStackParams } from '../../navigation/StackNavigator';
+import { Gender, Size } from '../../../infraestructure/interfaces/products/product.responses';
+import MyIcon from '../../components/ui/MyIcon';
+
+const sizes: Size[] = Object.values(Size);
+const genders: Gender[] = Object.values(Gender);
 
 interface Props extends StackScreenProps<RootStackParams, 'Product'> {}
 
 const ProductScreen = ({ navigation, route }: Props) => {
 	let { params } = route;
+
+	const theme = useTheme();
 	const productIdRef = useRef(params.productId);
 
 	const { data: product } = useQuery({
@@ -61,6 +68,48 @@ const ProductScreen = ({ navigation, route }: Props) => {
 					<Input label='Stock' value={product.stock.toString()} style={{ flex: 1 }} />
 				</Layout>
 
+				{/* Selectors */}
+				{/* Sizes */}
+				<ButtonGroup style={styles.bt_group} appearance='outline' size='small'>
+					{sizes.map((size) => (
+						<Button
+							key={size}
+							style={{
+								...styles.bt_group_item,
+								backgroundColor: true ? theme['color-primary-200'] : undefined,
+							}}
+						>
+							{size}
+						</Button>
+					))}
+				</ButtonGroup>
+
+				{/* Genders */}
+				<ButtonGroup style={styles.bt_group} appearance='outline' size='small'>
+					{genders.map((gender) => (
+						<Button
+							key={gender}
+							style={{
+								...styles.bt_group_item,
+								backgroundColor: true ? theme['color-primary-200'] : undefined,
+							}}
+						>
+							{gender}
+						</Button>
+					))}
+				</ButtonGroup>
+
+				{/* Save Button */}
+				<Button
+					onPress={() => console.log('Save')}
+					style={{ margin: 15 }}
+					accessoryLeft={<MyIcon name='save-outline' white />}
+				>
+					Save
+				</Button>
+
+				<Text> {JSON.stringify(product, null, 2)} </Text>
+
 				<Layout style={{ height: 200 }} />
 			</ScrollView>
 		</MainLayout>
@@ -81,5 +130,13 @@ const styles = StyleSheet.create({
 		marginHorizontal: 15,
 		flexDirection: 'row',
 		gap: 10,
+	},
+	bt_group: {
+		marginHorizontal: 15,
+		margin: 2,
+		marginTop: 20,
+	},
+	bt_group_item: {
+		flex: 1,
 	},
 });
