@@ -5,8 +5,9 @@ import { ProductListResponse } from "../../interfaces/products/product.responses
 
 export class ProductMapper {
     static tesloProductToEntity(product: ProductListResponse): Product {
+        const { user, ...rest } = product;
         return {
-            ...product,
+            ...rest,
             images: product.images.map(image => `${API_URL}/files/product/${image}`) // Se obtiene la imagen de cada producto por servicio
         }
     }

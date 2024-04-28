@@ -1,14 +1,16 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { Button, Icon, Layout, Text } from '@ui-kitten/components';
-import React from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { Button } from '@ui-kitten/components';
+import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { getProductsPaginated } from '../../../actions/products/get-product-paginated';
-import { useAuthStore } from '../../store/auth/useAuthStore';
-import MainLayout from '../../layouts/MainLayout';
-import FullScreenLoader from '../../components/ui/FullScreenLoader';
 import ProductList from '../../components/products/ProductList';
+import FullScreenLoader from '../../components/ui/FullScreenLoader';
+import MainLayout from '../../layouts/MainLayout';
+import { useAuthStore } from '../../store/auth/useAuthStore';
 
 const HomeScreen = () => {
+	const queryClient = useQueryClient();
 	const { logout } = useAuthStore();
 
 	const { isLoading, data, fetchNextPage } = useInfiniteQuery({
@@ -23,8 +25,15 @@ const HomeScreen = () => {
 		},
 	});
 
+	useFocusEffect(
+		useCallback(() => {
+			queryClient.invalidateQueries({ queryKey: ['products', 'infinite'] });
+		}, [queryClient]),
+	);
+
 	return (
 		<MainLayout title='TesloShop Products' subTitle='Welcome to TesloShop, here you can find the best products for you!'>
+			<Button onPress={logout}> Log out </Button>
 			{isLoading ? <FullScreenLoader /> : <ProductList products={data?.pages.flat() ?? []} fetchNextPage={fetchNextPage} />}
 		</MainLayout>
 	);

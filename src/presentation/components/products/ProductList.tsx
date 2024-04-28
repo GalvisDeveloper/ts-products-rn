@@ -1,6 +1,7 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { Layout, List } from '@ui-kitten/components';
 import React, { useState } from 'react';
-import { RefreshControl, StyleSheet, Text } from 'react-native';
+import { RefreshControl, StyleSheet } from 'react-native';
 import { Product } from '../../../domain/entities/product';
 import ProductCard from './ProductCard';
 
@@ -14,8 +15,8 @@ const ProductList = ({ products, fetchNextPage }: Props) => {
 
 	const onPullToRefresh = async () => {
 		setIsRefreshing(true);
-		// sleep 2
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+		// sleep 0.2
+		await new Promise((resolve) => setTimeout(resolve, 200));
 		setIsRefreshing(false);
 	};
 

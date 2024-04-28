@@ -1,4 +1,4 @@
-import { Size, Tag } from "../../infraestructure/interfaces/products/product.responses";
+import { Gender, Size, Tag } from "../../infraestructure/interfaces/products/product.responses";
 
 
 export interface Product {
@@ -9,7 +9,7 @@ export interface Product {
     slug:        string;
     stock:       number;
     sizes:       Size[];
-    gender:      string;
+    gender:      Gender;
     tags:        Tag[];
     images:      string[];
 }

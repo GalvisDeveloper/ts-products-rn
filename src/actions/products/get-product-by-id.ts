@@ -1,9 +1,8 @@
 import { tesloApi } from "../../config/api/tesloApi";
-import { Product } from "../../domain/entities/product";
+import { Product } from '../../domain/entities/product';
 import { showErrorMessage } from "../../helpers/axiosError";
 import { ProductListResponse } from "../../infraestructure/interfaces/products/product.responses";
 import { ProductMapper } from "../../infraestructure/mappers/product/product.mapper";
-
 
 export const getProductById = async (id: string): Promise<Product> => {
     try {
