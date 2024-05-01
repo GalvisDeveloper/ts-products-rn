@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@ui-kitten/components';
 import React, { useCallback } from 'react';
@@ -8,10 +8,14 @@ import ProductList from '../../components/products/ProductList';
 import FullScreenLoader from '../../components/ui/FullScreenLoader';
 import MainLayout from '../../layouts/MainLayout';
 import { useAuthStore } from '../../store/auth/useAuthStore';
+import FAB from '../../components/ui/FAB';
+import { RootStackParams } from '../../navigation/StackNavigator';
 
 const HomeScreen = () => {
 	const queryClient = useQueryClient();
 	const { logout } = useAuthStore();
+
+	const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
 	const { isLoading, data, fetchNextPage } = useInfiniteQuery({
 		queryKey: ['products', 'infinite'],
@@ -32,10 +36,20 @@ const HomeScreen = () => {
 	);
 
 	return (
-		<MainLayout title='TesloShop Products' subTitle='Welcome to TesloShop, here you can find the best products for you!'>
-			<Button onPress={logout}> Log out </Button>
-			{isLoading ? <FullScreenLoader /> : <ProductList products={data?.pages.flat() ?? []} fetchNextPage={fetchNextPage} />}
-		</MainLayout>
+		<>
+			<MainLayout title='TesloShop Products' subTitle='Welcome to TesloShop, here you can find the best products for you!'>
+				<Button onPress={logout}> Log out </Button>
+				{isLoading ? (
+					<FullScreenLoader />
+				) : (
+					<ProductList products={data?.pages.flat() ?? []} fetchNextPage={fetchNextPage} />
+				)}
+			</MainLayout>
+			<FAB
+				style={{ position: 'absolute', bottom: 20, right: 20 }}
+				onPress={() => navigation.navigate('Product', { productId: 'new' })}
+			/>
+		</>
 	);
 };
 
