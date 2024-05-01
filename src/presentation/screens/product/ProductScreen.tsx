@@ -1,18 +1,18 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
-import React, { useRef, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet } from 'react-native';
+import { Formik } from 'formik';
+import React, { useRef } from 'react';
+import { FlatList, Image, ScrollView, StyleSheet } from 'react-native';
 import { getProductById } from '../../../actions/products/get-product-by-id';
+import { updateCreateProduct } from '../../../actions/products/update-create';
+import { Product } from '../../../domain/entities/product';
+import { Gender, Size } from '../../../infraestructure/interfaces/products/product.responses';
 import { FadeInImage } from '../../components/ui/FadeInImage';
 import FullScreenLoader from '../../components/ui/FullScreenLoader';
+import MyIcon from '../../components/ui/MyIcon';
 import MainLayout from '../../layouts/MainLayout';
 import { RootStackParams } from '../../navigation/StackNavigator';
-import { Gender, Size } from '../../../infraestructure/interfaces/products/product.responses';
-import MyIcon from '../../components/ui/MyIcon';
-import { Formik } from 'formik';
-import { Product } from '../../../domain/entities/product';
-import { updateCreateProduct } from '../../../actions/products/update-create';
 
 const sizes: Size[] = Object.values(Size);
 const genders: Gender[] = Object.values(Gender);
@@ -55,16 +55,18 @@ const ProductScreen = ({ navigation, route }: Props) => {
 				<MainLayout title={product.title} subTitle={`Price: ${product.price}`}>
 					<ScrollView style={styles.main_sv}>
 						{/* Flat list images  */}
-						<Layout>
-							<FlatList
-								data={values.images}
-								keyExtractor={(item, idx) => `${item}-${idx}`}
-								showsHorizontalScrollIndicator={false}
-								renderItem={({ item }) => (
-									<FadeInImage uri={item} style={{ width: 190, height: 190, marginHorizontal: 7 }} />
-								)}
-								horizontal
-							/>
+						<Layout style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
+							{values.images.length === 0 ? (
+								<Image source={require('../../../assets/no-product-image.png')} style={styles.image_list} />
+							) : (
+								<FlatList
+									data={values.images}
+									keyExtractor={(item, idx) => `${item}-${idx}`}
+									showsHorizontalScrollIndicator={false}
+									renderItem={({ item }) => <FadeInImage uri={item} style={styles.image_list} />}
+									horizontal
+								/>
+							)}
 						</Layout>
 
 						{/* Brief info of the product */}
@@ -199,5 +201,10 @@ const styles = StyleSheet.create({
 	},
 	bt_group_item: {
 		flex: 1,
+	},
+	image_list: {
+		width: 190,
+		height: 190,
+		marginHorizontal: 7,
 	},
 });
