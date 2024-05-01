@@ -3,19 +3,15 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import React, { useRef } from 'react';
-import { FlatList, Image, ScrollView, StyleSheet } from 'react-native';
-import { getProductById } from '../../../actions/products/get-product-by-id';
-import { updateCreateProduct } from '../../../actions/products/update-create';
+import { ScrollView, StyleSheet } from 'react-native';
+import { getProductById, updateCreateProduct } from '../../../actions/products';
+import { genders, sizes } from '../../../config/constants/global';
 import { Product } from '../../../domain/entities/product';
-import { Gender, Size } from '../../../infraestructure/interfaces/products/product.responses';
-import { FadeInImage } from '../../components/ui/FadeInImage';
+import SlideImages from '../../components/products/SlideImages';
 import FullScreenLoader from '../../components/ui/FullScreenLoader';
 import MyIcon from '../../components/ui/MyIcon';
 import MainLayout from '../../layouts/MainLayout';
 import { RootStackParams } from '../../navigation/StackNavigator';
-
-const sizes: Size[] = Object.values(Size);
-const genders: Gender[] = Object.values(Gender);
 
 interface Props extends StackScreenProps<RootStackParams, 'Product'> {}
 
@@ -56,17 +52,7 @@ const ProductScreen = ({ navigation, route }: Props) => {
 					<ScrollView style={styles.main_sv}>
 						{/* Flat list images  */}
 						<Layout style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
-							{values.images.length === 0 ? (
-								<Image source={require('../../../assets/no-product-image.png')} style={styles.image_list} />
-							) : (
-								<FlatList
-									data={values.images}
-									keyExtractor={(item, idx) => `${item}-${idx}`}
-									showsHorizontalScrollIndicator={false}
-									renderItem={({ item }) => <FadeInImage uri={item} style={styles.image_list} />}
-									horizontal
-								/>
-							)}
+							<SlideImages images={values.images} />
 						</Layout>
 
 						{/* Brief info of the product */}
@@ -201,10 +187,5 @@ const styles = StyleSheet.create({
 	},
 	bt_group_item: {
 		flex: 1,
-	},
-	image_list: {
-		width: 190,
-		height: 190,
-		marginHorizontal: 7,
 	},
 });
