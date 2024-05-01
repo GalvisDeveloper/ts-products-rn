@@ -52,15 +52,12 @@ const ProductScreen = ({ navigation, route }: Props) => {
 	return (
 		<Formik initialValues={product} onSubmit={mutation.mutate}>
 			{({ values, handleChange, handleSubmit, errors, setFieldValue }) => (
-				<MainLayout
-					title={product.title}
-					subTitle={`Price: ${product.price}`}
-				>
+				<MainLayout title={product.title} subTitle={`Price: ${product.price}`}>
 					<ScrollView style={styles.main_sv}>
 						{/* Flat list images  */}
 						<Layout>
 							<FlatList
-								data={product.images}
+								data={values.images}
 								keyExtractor={(item, idx) => `${item}-${idx}`}
 								showsHorizontalScrollIndicator={false}
 								renderItem={({ item }) => (
@@ -86,7 +83,7 @@ const ProductScreen = ({ navigation, route }: Props) => {
 							/>
 							<Input
 								label='Description'
-								value={product.description}
+								value={values.description}
 								style={{ marginVertical: 5 }}
 								multiline
 								numberOfLines={5}

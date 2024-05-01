@@ -32,8 +32,8 @@ export enum Tag {
 }
 
 export enum Gender {
-    Kid = 'Kid',
-    Men = 'Men',
-    Women = 'Women',
-    Unisex = 'Unisex'
+    Kid = 'kid',
+    Men = 'men',
+    Women = 'women',
+    Unisex = 'unisex'
 }

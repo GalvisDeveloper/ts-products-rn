@@ -16,9 +16,9 @@ const ProductCard = ({ product }: Props) => {
 	return (
 		<Card style={styles.ct} onPress={() => navigation.navigate('Product', { productId: product.id })}>
 			{product.images.length === 0 ? (
-				<Image source={require('../../../assets/no-product-image.png')} />
+				<Image source={require('../../../assets/no-product-image.png')} style={styles.image} />
 			) : (
-				<FadeInImage uri={product.images[0]} style={{ flex: 1, width: '100%', height: 200 }} />
+				<FadeInImage uri={product.images[0]} style={styles.image} />
 			)}
 
 			<Text style={styles.title} numberOfLines={2}>
@@ -39,6 +39,11 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: 'black',
 	},
+	image: { 
+		flex: 1, 
+		width: '100%', 
+		height: 200
+	}
 });
 
 export default ProductCard;

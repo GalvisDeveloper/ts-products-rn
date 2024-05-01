@@ -8,8 +8,8 @@ export const updateCreateProduct = async (product: Partial<Product>) => {
     product.stock = Number(product.stock);
     product.price = Number(product.price);
 
-    if (!product.id) {
-        throw new Error('Create product not implemented yet');
+    if (!product.id || product.id === 'new') {
+        return await createProduct(product);
     }
 
     return await updateProduct(product);
@@ -34,4 +34,20 @@ const updateProduct = async (product: Partial<Product>) => {
 const prepareImages = (images: string[]) => {
     //TODO: revisar files
     return images.map(image => image.split('/').pop());
+}
+
+
+const createProduct = async (product: Partial<Product>) => {
+    try {
+        const { id, images = [], ...rest } = product;
+        const checkedImages = prepareImages(images);
+
+        const { data } = await tesloApi.post(`/products`, { ...rest, images: checkedImages });
+
+        ToastAndroid.show('Product created', ToastAndroid.SHORT);
+
+        return data;
+    } catch (error) {
+        showErrorMessage(error);
+    }
 }
