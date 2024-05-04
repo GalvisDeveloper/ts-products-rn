@@ -1,22 +1,24 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
+import { Button, ButtonGroup, Input, Layout, Modal, useTheme } from '@ui-kitten/components';
 import { Formik } from 'formik';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { getProductById, updateCreateProduct } from '../../../actions/products';
 import { genders, sizes } from '../../../config/constants/global';
 import { Product } from '../../../domain/entities/product';
+import ChoosePictureOption from '../../components/ui/ChoosePictureOption';
 import SlideImages from '../../components/products/SlideImages';
 import FullScreenLoader from '../../components/ui/FullScreenLoader';
 import MyIcon from '../../components/ui/MyIcon';
 import MainLayout from '../../layouts/MainLayout';
 import { RootStackParams } from '../../navigation/StackNavigator';
-import { CameraAdapter } from '../../../config/adapters';
 
 interface Props extends StackScreenProps<RootStackParams, 'Product'> {}
 
-const ProductScreen = ({ navigation, route }: Props) => {
+const ProductScreen = ({ route }: Props) => {
+	const [isOpenModalImage, setIsOpenModalImage] = useState(false);
+
 	let { params } = route;
 
 	const theme = useTheme();
@@ -52,10 +54,7 @@ const ProductScreen = ({ navigation, route }: Props) => {
 					title={product.title}
 					subTitle={`Price: ${product.price}`}
 					rightActionIcon='image-outline'
-					rightAction={async () => {
-						const photos = await CameraAdapter.takePicture();
-						setFieldValue('images', [...values.images, ...photos]);
-					}}
+					rightAction={() => setIsOpenModalImage(true)}
 				>
 					<ScrollView style={styles.main_sv}>
 						{/* Flat list images  */}
@@ -165,6 +164,18 @@ const ProductScreen = ({ navigation, route }: Props) => {
 
 						<Layout style={{ height: 200 }} />
 					</ScrollView>
+
+					<Modal
+						visible={isOpenModalImage}
+						backdropStyle={styles.modal_backdrop}
+						onBackdropPress={() => setIsOpenModalImage(false)}
+					>
+						<ChoosePictureOption
+							images={values.images}
+							setFieldValueForm={setFieldValue}
+							modalAction={setIsOpenModalImage}
+						/>
+					</Modal>
 				</MainLayout>
 			)}
 		</Formik>
@@ -193,5 +204,8 @@ const styles = StyleSheet.create({
 	},
 	bt_group_item: {
 		flex: 1,
+	},
+	modal_backdrop: {
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 	},
 });

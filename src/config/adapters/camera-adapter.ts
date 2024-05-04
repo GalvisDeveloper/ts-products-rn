@@ -1,4 +1,4 @@
-import { launchCamera } from "react-native-image-picker";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 
 
 export class CameraAdapter {
@@ -16,9 +16,19 @@ export class CameraAdapter {
         return []
     }
 
-    // static async pickImage(): Promise<string> {
+    static async pickImage(): Promise<string[]> {
+        const response = await launchImageLibrary({
+            mediaType: 'photo',
+            quality: 1,
+            includeBase64: false,
+            selectionLimit: 10,
+        });
 
-    // }
+        if (response && response.assets && response.assets.length > 0) {
+            return response.assets.map((asset) => asset.uri!);
+        }
+        return []
+    }
 
     // static async pickVideo(): Promise<string> {
 
