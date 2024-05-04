@@ -13,10 +13,13 @@ interface Props {
 const ProductList = ({ products, fetchNextPage }: Props) => {
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
+	const queryClient = useQueryClient();
+
 	const onPullToRefresh = async () => {
 		setIsRefreshing(true);
 		// sleep 0.2
 		await new Promise((resolve) => setTimeout(resolve, 200));
+		queryClient.invalidateQueries({ queryKey: ['product', 'infinite'] });
 		setIsRefreshing(false);
 	};
 

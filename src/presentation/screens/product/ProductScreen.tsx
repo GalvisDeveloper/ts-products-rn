@@ -12,6 +12,7 @@ import FullScreenLoader from '../../components/ui/FullScreenLoader';
 import MyIcon from '../../components/ui/MyIcon';
 import MainLayout from '../../layouts/MainLayout';
 import { RootStackParams } from '../../navigation/StackNavigator';
+import { CameraAdapter } from '../../../config/adapters';
 
 interface Props extends StackScreenProps<RootStackParams, 'Product'> {}
 
@@ -36,7 +37,6 @@ const ProductScreen = ({ navigation, route }: Props) => {
 			productIdRef.current = data.id;
 			// Invalidate the cache
 			queryClient.invalidateQueries({ queryKey: ['product', 'infinite'] });
-			// Update the cache
 			queryClient.invalidateQueries({ queryKey: ['product', productIdRef.current] });
 		},
 	});
@@ -48,7 +48,15 @@ const ProductScreen = ({ navigation, route }: Props) => {
 	return (
 		<Formik initialValues={product} onSubmit={mutation.mutate}>
 			{({ values, handleChange, handleSubmit, errors, setFieldValue }) => (
-				<MainLayout title={product.title} subTitle={`Price: ${product.price}`}>
+				<MainLayout
+					title={product.title}
+					subTitle={`Price: ${product.price}`}
+					rightActionIcon='image-outline'
+					rightAction={async () => {
+						const photos = await CameraAdapter.takePicture();
+						setFieldValue('images', [...values.images, ...photos]);
+					}}
+				>
 					<ScrollView style={styles.main_sv}>
 						{/* Flat list images  */}
 						<Layout style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
@@ -154,8 +162,6 @@ const ProductScreen = ({ navigation, route }: Props) => {
 						>
 							Save
 						</Button>
-
-						<Text> {JSON.stringify(values, null, 2)} </Text>
 
 						<Layout style={{ height: 200 }} />
 					</ScrollView>
